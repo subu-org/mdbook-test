@@ -1,6 +1,7 @@
 name: Update Releases in mdBook
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
@@ -21,6 +22,9 @@ jobs:
 
       - name: Fetch release information and update SUMMARY.md
         run: python fetch_releases.py
+
+      - name: Debug
+        run: cat src/SUMMARY.md
 
       - name: Install mdBook
         uses: extractions/setup-crate@v1
