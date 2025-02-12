@@ -1,16 +1,22 @@
 import requests
 
 # Replace with your GitHub repository details
-repo_owner = "your-username"
-repo_name = "your-repo"
+repo_owner = "subu-org"
+repo_name = "mdbook-test"
 
 # Fetch the latest release
 url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
 response = requests.get(url)
 release_data = response.json()
 
+# Check if 'name' key exists in the response
+if 'name' in release_data:
+    release_name = release_data['name']
+    print(f"Release Name: {release_name}")
+else:
+    print("Error: 'name' key not found in the release data")
+
 # Extract relevant information
-release_name = release_data["name"]
 release_tag = release_data["tag_name"]
 release_url = release_data["html_url"]
 release_date = release_data["published_at"].split("T")[0]  # Format date
