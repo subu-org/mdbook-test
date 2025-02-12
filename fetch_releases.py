@@ -12,14 +12,13 @@ release_data = response.json()
 # Check if 'name' key exists in the response
 if 'name' in release_data:
     release_name = release_data['name']
-    print(f"Release Name: {release_name}")
 else:
-    print("Error: 'name' key not found in the release data")
+    release_name = "Unknown Release"
 
 # Extract relevant information
-release_tag = release_data["tag_name"]
-release_url = release_data["html_url"]
-release_date = release_data["published_at"].split("T")[0]  # Format date
+release_tag = release_data.get("tag_name", "Unknown Tag")
+release_url = release_data.get("html_url", "#")
+release_date = release_data.get("published_at", "").split("T")[0]  # Format date
 
 # Create a Markdown string for the release
 release_markdown = f"- **Latest Release: [{release_name} ({release_tag})]({release_url})** - {release_date}\n"
