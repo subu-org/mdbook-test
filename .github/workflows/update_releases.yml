@@ -2,6 +2,9 @@ name: Update Releases in mdBook
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   release:
     types: [published]
 
