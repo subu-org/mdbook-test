@@ -20,8 +20,15 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Fetch release information and update SUMMARY.md
-        run: python fetch_releases.py
+      # - name: Fetch release information and update SUMMARY.md
+      #   run: python fetch_releases.py
+      - name: Update version in file
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'theme/index.hbs'
+          search-text: 'RELEASE_VERSION'
+          replacement-text: ${{ github.event_name == 'release' && github.event.release.tag_name || (github.event_name == 'push' && github.sha ) }}
+
 
       - name: Debug
         run: cat theme/index.hbs
