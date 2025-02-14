@@ -29,7 +29,8 @@ jobs:
           if [ "${{ github.event_name }}" == "release" ]; then
             echo "REPLACEMENT_TEXT=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           elif [ "${{ github.event_name }}" == "push" ]; then
-            echo "REPLACEMENT_TEXT=${{ github.ref_name }} (${{ github.sha::0:7 }})" >> $GITHUB_ENV
+            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+            echo "REPLACEMENT_TEXT=${{ github.ref_name }} (${SHORT_SHA})" >> $GITHUB_ENV
           fi
 
       - name: Update version in file
