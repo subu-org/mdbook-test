@@ -1,10 +1,3 @@
-nav.sidebar mdbook-sidebar-scrollbox .chapter-item.affix a {
-    color: #ff5722 !important;
-    font-size: 1.5em !important;
-    font-weight: bold !important;
-  }
-
-
 #sidebar-version {
     font-size: 1.1rem;
     font-weight: 600;
