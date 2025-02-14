@@ -24,7 +24,7 @@ jobs:
         run: python fetch_releases.py
 
       - name: Debug
-        run: cat src/SUMMARY.md
+        run: cat theme/index.hbs
 
       - name: Install mdBook
         uses: extractions/setup-crate@v1

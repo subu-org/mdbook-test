@@ -1,6 +1,21 @@
 [book]
-authors = ["“Subramanian"]
+authors = ["Subramanian"]  # Or your authors
+description = "This is a sample book"
 language = "en"
 multilingual = false
 src = "src"
+version = "v1.0"
 title = "My First Mdbook"
+
+# [preprocessor.year_replacer]
+# command = "python test.py"
+
+[preprocessor.variables]
+use_env = true
+
+[preprocessor.variables.variables]
+name= "my wonderful name"
+version = "v1.0"
+
+[output.html]
+additional-css = ["theme/custom.css"]
