@@ -22,16 +22,22 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests
+      
+      - name: Set Replacement Text
+        id: set-replacement-text
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "REPLACEMENT_TEXT=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          elif [ "${{ github.event_name }}" == "push" ]; then
+            echo "REPLACEMENT_TEXT=${{ github.ref_name }} (${{ github.sha::0:7 }})" >> $GITHUB_ENV
+          fi
 
-      # - name: Fetch release information and update SUMMARY.md
-      #   run: python fetch_releases.py
       - name: Update version in file
         uses: richardrigutins/replace-in-files@v2
         with:
           files: 'theme/index.hbs'
           search-text: 'RELEASE_VERSION'
-          replacement-text: ${{ github.event_name == 'release' && github.event.release.tag_name || (github.event_name == 'push' && github.sha ) }}
-
+          replacement-text: ${{ env.REPLACEMENT_TEXT }}
 
       - name: Debug
         run: cat theme/index.hbs
