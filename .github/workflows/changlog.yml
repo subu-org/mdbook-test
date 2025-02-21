@@ -25,6 +25,7 @@ jobs:
 
       - name: Append release info to changelog.md
         run: |
+          echo "## ${{ env.RELEASE_NAME }}" > src/CHANGELOG.md
           echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
           echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
           echo "" >> new_changelog.md
