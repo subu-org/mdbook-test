@@ -42,7 +42,7 @@ jobs:
           replacement-text: ${{ env.REPLACEMENT_TEXT }}
 
       - name: Debug
-        run: cat theme/index.hbs
+        run: cat theme/header.hbs
 
       - name: Install mdBook
         uses: extractions/setup-crate@v1
