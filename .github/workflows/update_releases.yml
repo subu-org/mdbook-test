@@ -60,11 +60,18 @@ jobs:
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
           echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
 
+      - name: "✏️ Generate release changelog"
+        id: ext-changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Required
+
       - name: Append release info to changelog.md
         if: github.event_name == 'release'
         run: |
-          echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
-          echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
+          echo "${{ steps.ext-changelog.outputs.changelog }}" > new_changelog.md
+          #echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
+          #echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
           echo "" >> new_changelog.md
           cat src/CHANGELOG.md >> new_changelog.md
           mv new_changelog.md src/CHANGELOG.md
