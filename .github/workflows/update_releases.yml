@@ -22,16 +22,26 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests
+
+      - name: Print all environment variables
+        run: env
+
+      - name: Print GitHub context variables
+        run: |
+          echo "GitHub Context:"
+          echo "${{ toJson(github) }}" | jq '.'
       
       - name: Set Replacement Text
         id: set-replacement-text
         run: |
-          echo "${{ github.event_name }}"
           if [ "${{ github.event_name }}" == "release" ]; then
             echo "REPLACEMENT_TEXT=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           elif [ "${{ github.event_name }}" == "push" ]; then
             SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
             echo "REPLACEMENT_TEXT=${{ github.ref_name }} (${SHORT_SHA})" >> $GITHUB_ENV
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            LATEST_COMMIT=$(git rev-parse --short HEAD)
+            echo "REPLACEMENT_TEXT=${{ github.ref_name }} (${LATEST_COMMIT})" >> $GITHUB_ENV
           fi
 
       - name: Update version in file
