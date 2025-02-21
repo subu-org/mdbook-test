@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure the full history is fetched
 
       - name: Fetch release information
         id: fetch_release
@@ -32,8 +34,9 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-changelog  # Create a new branch
           git add src/CHANGELOG.md
           git commit -m "Update changelog for release ${{ env.RELEASE_NAME }}"
-          git push
+          git push origin update-changelog:main  # Push to the main branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
