@@ -26,6 +26,7 @@ jobs:
       - name: Set Replacement Text
         id: set-replacement-text
         run: |
+          echo "${{ github.event_name }}"
           if [ "${{ github.event_name }}" == "release" ]; then
             echo "REPLACEMENT_TEXT=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           elif [ "${{ github.event_name }}" == "push" ]; then
@@ -36,8 +37,8 @@ jobs:
       - name: Update version in file
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: 'theme/index.hbs'
-          search-text: 'RELEASE_VERSION'
+          files: 'theme/header.hbs'
+          search-text: '||working tree||'
           replacement-text: ${{ env.REPLACEMENT_TEXT }}
 
       - name: Debug
