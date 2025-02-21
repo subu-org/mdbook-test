@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "GitHub Context:"
           echo "${{ toJson(github) }}"
-      
+
       - name: Set Replacement Text
         id: set-replacement-text
         run: |
@@ -44,12 +44,42 @@ jobs:
       - name: Update version in file
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: 'theme/header.hbs'
-          search-text: '||working tree||'
+          files: "theme/header.hbs"
+          search-text: "||working tree||"
           replacement-text: ${{ env.REPLACEMENT_TEXT }}
 
       - name: Debug
         run: cat theme/header.hbs
+
+      - name: Fetch release information
+        if: github.event_name == 'release'
+        id: fetch_release
+        run: |
+          RELEASE_NAME=$(jq -r .release.name "$GITHUB_EVENT_PATH")
+          RELEASE_BODY=$(jq -r .release.body "$GITHUB_EVENT_PATH")
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
+
+      - name: Append release info to changelog.md
+        if: github.event_name == 'release'
+        run: |
+          echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
+          echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
+          echo "" >> new_changelog.md
+          cat src/CHANGELOG.md >> new_changelog.md
+          mv new_changelog.md src/CHANGELOG.md
+
+      - name: Commit and push changes
+        if: github.event_name == 'release'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-changelog  # Create a new branch
+          git add src/CHANGELOG.md
+          git commit -m "Update changelog for release ${{ env.RELEASE_NAME }}"
+          git push origin update-changelog:main  # Push to the main branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install mdBook
         uses: extractions/setup-crate@v1

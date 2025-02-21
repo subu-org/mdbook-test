@@ -1,9 +1,10 @@
 name: Generate Changelog
 
 on:
-  release:
-    types:
-      - created
+  workflow_dispatch:
+#   release:
+#     types:
+#       - created
 
 jobs:
   changelog:
