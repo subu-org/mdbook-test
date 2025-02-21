@@ -1,5 +1,7 @@
 # Changelog
 
+# Changelog
+
 ## v0.1.8
 **Full Changelog**: https://github.com/subu-org/mdbook-test/compare/v0.1.7...v0.1.8
 
