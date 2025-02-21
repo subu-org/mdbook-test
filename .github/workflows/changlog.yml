@@ -25,7 +25,7 @@ jobs:
           echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
           echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
           echo "" >> new_changelog.md
-          cat src/changelog.md >> new_changelog.md
+          cat src/CHANGELOG.md >> new_changelog.md
           mv new_changelog.md src/CHANGELOG.md
 
       - name: Commit and push changes
