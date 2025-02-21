@@ -15,6 +15,24 @@
         <meta charset="UTF-8">
         <meta name="robots" content="noindex">
         <!-- Custom HTML head -->
+        <script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+          mermaid.initialize({ startOnLoad: true });
+        </script>
+        
+        <style type="text/css">
+        @media only screen {
+          .version {
+            margin-left: auto;
+            margin-right: auto;
+            left: 10px;
+            bottom: 10px;
+            position: fixed;
+            z-index: 10000;
+            font-size: 10px;
+          }
+        }
+        </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
         <link rel="stylesheet" href="css/variables.css">
@@ -25,7 +43,6 @@
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="theme/custom.css">
     </head>
     <body class="sidebar-iframe-inner">
         <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" target="_parent"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html" target="_parent"><strong aria-hidden="true">2.</strong> Chapter 2</a></li></ol>
