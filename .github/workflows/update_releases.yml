@@ -29,7 +29,7 @@ jobs:
       - name: Print GitHub context variables
         run: |
           echo "GitHub Context:"
-          echo "${{ toJson(github) }}" | jq '.'
+          echo "${{ toJson(github) }}"
       
       - name: Set Replacement Text
         id: set-replacement-text
