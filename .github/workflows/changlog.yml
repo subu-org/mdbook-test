@@ -1,13 +1,39 @@
-name: Changelog
+name: Generate Changelog
+
 on:
   release:
     types:
       - created
+
 jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
-      - name: "✏️ Generate release changelog"
-        uses: janheinrichmerker/action-github-changelog-generator@v2.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch release information
+        id: fetch_release
+        run: |
+          RELEASE_NAME=$(jq -r .release.name "$GITHUB_EVENT_PATH")
+          RELEASE_BODY=$(jq -r .release.body "$GITHUB_EVENT_PATH")
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
+
+      - name: Append release info to changelog.md
+        run: |
+          echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
+          echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
+          echo "" >> new_changelog.md
+          cat src/changelog.md >> new_changelog.md
+          mv new_changelog.md src/CHANGELOG.md
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/changelog.md
+          git commit -m "Update changelog for release ${{ env.RELEASE_NAME }}"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
