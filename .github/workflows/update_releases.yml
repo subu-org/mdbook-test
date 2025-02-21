@@ -69,13 +69,14 @@ jobs:
       - name: Append release info to changelog.md
         if: github.event_name == 'release'
         run: |
-          echo "${{ steps.ext-changelog.outputs.changelog }}"
-          echo "${{ steps.ext-changelog.outputs.changelog }}" > new_changelog.md
+          cat /github/workspace/CHANGELOG.md
+          #echo "${{ steps.ext-changelog.outputs.changelog }}"
+          #echo "${{ steps.ext-changelog.outputs.changelog }}" > new_changelog.md
           #echo "## ${{ env.RELEASE_NAME }}" > new_changelog.md
           #echo "${{ env.RELEASE_BODY }}" >> new_changelog.md
-          echo "" >> new_changelog.md
-          cat src/CHANGELOG.md >> new_changelog.md
-          mv new_changelog.md src/CHANGELOG.md
+          #echo "" >> new_changelog.md
+          #cat src/CHANGELOG.md >> new_changelog.md
+          cp /github/workspace/CHANGELOG.md src/CHANGELOG.md
 
       - name: Commit and push changes
         if: github.event_name == 'release'
